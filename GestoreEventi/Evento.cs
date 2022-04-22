@@ -27,7 +27,8 @@ namespace GestoreEventi
             {
 
                 this.dataEvento = dataEvento;
-            } 
+            }
+            
         }
 
         //Getter
@@ -43,9 +44,14 @@ namespace GestoreEventi
         {
             return capienzaMassimaEvento;
         }
-        public int GetnumeroPostiPrenotati()
+        public int GetNumeroPostiPrenotati()
         {
             return numeroPostiPrenotati;
+        }
+        public int GetNumeroPostiDisponibili()
+        {
+            int numeroPostiDisponibili = capienzaMassimaEvento - numeroPostiPrenotati;
+            return numeroPostiDisponibili;
         }
 
         //Setter
@@ -67,11 +73,19 @@ namespace GestoreEventi
         }
 
         //Metodi
-        public void Prenota()
+        public void Prenota(int numeroDiPostiDaPrenotare)
         {
-            this.numeroPostiPrenotati++;
+            int numeroPostiDisponibili = capienzaMassimaEvento - numeroPostiPrenotati;
+            if (numeroDiPostiDaPrenotare <= numeroPostiDisponibili)
+            {
+                numeroPostiPrenotati += numeroDiPostiDaPrenotare;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Non sono diponibili quel numero di posti");
+            }
         }
-        public void Disdici()
+        public void Disdici(int numeroDiPostiDaDisdire)
         {
             if (dataEvento < DateTime.Now)
             {
@@ -81,7 +95,14 @@ namespace GestoreEventi
             {
                 throw new NessunPostoPrenotato("Nessun posto da disdire");
             }
-            this.numeroPostiPrenotati--;
+            else if(numeroDiPostiDaDisdire > capienzaMassimaEvento)
+            {
+                numeroPostiPrenotati = 0;
+            }
+            else
+            {
+                numeroPostiPrenotati -= numeroDiPostiDaDisdire;
+            }
         }
         public override string ToString()
         {
