@@ -38,7 +38,7 @@ Evento ChiediEvento()
             try
             {
                 capienzaMassima = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa); 
-                if (capienzaMassima < 0)
+                if (capienzaMassima <= 0)
                 {
                     Console.WriteLine("Il numero di posti deve essere maggiore di 0, riprova");
                 }
@@ -225,7 +225,7 @@ while (!formatoCapienzaMassimaCorretto)
     try
     {
         capienzaMassimaConferenza = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa);
-        if (capienzaMassimaConferenza < 0)
+        if (capienzaMassimaConferenza <= 0)
         {
             Console.WriteLine("Il numero di posti deve essere maggiore di 0");
         }
