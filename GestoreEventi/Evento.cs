@@ -28,7 +28,7 @@ namespace GestoreEventi
 
                 this.dataEvento = dataEvento;
             }
-            
+            //forse aggiungere numeroPostiDisponibili
         }
 
         //Getter
@@ -50,7 +50,7 @@ namespace GestoreEventi
         }
         public int GetNumeroPostiDisponibili()
         {
-            int numeroPostiDisponibili = capienzaMassimaEvento - numeroPostiPrenotati;
+            int numeroPostiDisponibili = capienzaMassimaEvento - numeroPostiPrenotati;      //forse da aggiungere come attributo
             return numeroPostiDisponibili;
         }
 

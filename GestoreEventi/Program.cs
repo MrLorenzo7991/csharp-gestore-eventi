@@ -80,3 +80,17 @@ while (vuoiDisdirePosti)
             break;
     }
 }
+
+//Programma di eventi
+
+Console.WriteLine("Ora creiamo un programma di eventi");
+Console.Write("Come vuoi chiamare il tuo programma di eventi? ");
+ProgrammaEventi programma = new(Console.ReadLine());
+Console.WriteLine("Quanti eventi vuoi aggiungere nel tuo programma? ");
+int numeroDiEventi = ControlloInput.ConvertiStringaInIntero(Console.ReadLine());        //da gestire eccezione numero intero
+
+for(int i = 0; i < numeroDiEventi; i++)
+{
+    Console.WriteLine("Evento numero " + (i+1));
+
+}
