@@ -45,7 +45,7 @@ namespace GestoreEventi
             eventi.Clear();
         }
 
-        public string TuttoIlProgramma()
+        public string StampaTuttoIlProgramma()
         {
             string tuttoIlProgramma = titoloProgramma + ":\n";
             foreach(Evento evento in eventi)

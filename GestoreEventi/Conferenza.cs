@@ -38,7 +38,7 @@ namespace GestoreEventi
         //override ToString()
         public override string ToString()
         {
-            string dettagliConferenza = base.dataEvento.ToString() + " - Intervento di " + relatore + " - " + prezzo.ToString("0.00");
+            string dettagliConferenza = base.dataEvento.ToString("dd/mm/yyyy") +" - " + base.titolo + " - Intervento di " + relatore + " - " + prezzo.ToString("0.00");
             return dettagliConferenza;
         }
     }

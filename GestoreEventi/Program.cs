@@ -108,7 +108,7 @@ for(int i = 0; i < numeroDiEventi; i++)
 
 Console.WriteLine("Il numero di eventi presente nella lista è di: " + programma.NumeroEventiLista());
 Console.WriteLine("Ecco il tuo Programma di eventi: ");
-Console.WriteLine(programma.TuttoIlProgramma());
+Console.WriteLine(programma.StampaTuttoIlProgramma());
 
 Console.Write("Inserisci una data per conoscere tutti gli eventi in quella data: ");
 DateTime dataDaControllare = DateTime.Now;
@@ -127,9 +127,18 @@ while (!formatoDataCorretto)
     }
 }
 List<Evento> eventiNellaDatataSpecifica = programma.EventiNellaData(dataDaControllare);
+if (eventiNellaDatataSpecifica.Count < 0)
+{
+    Console.WriteLine("La lista di eventi in data " + dataDaControllare.ToString("dd/MM/yyyy") + " è");
+    ProgrammaEventi.StampaLista(eventiNellaDatataSpecifica);
+}
+else
+{
+    Console.WriteLine("Nessun evento per quella data.");
+}
+//programma.SvuotaListaEventi();
 
-Console.WriteLine("La lista di eventi in data " + dataDaControllare.ToString("dd/MM/yyyy") + " è");
-ProgrammaEventi.StampaLista(eventiNellaDatataSpecifica);
-programma.SvuotaListaEventi();
-
-
+DateTime dataConferenza = new DateTime(2999, 12, 1);
+Conferenza conferezaAppezzottata = new Conferenza("Come non sclerare programmando", dataConferenza, 300, "Dott. Zen", 2.41);
+programma.AggiungiEvento(conferezaAppezzottata);
+Console.WriteLine(programma.StampaTuttoIlProgramma());
