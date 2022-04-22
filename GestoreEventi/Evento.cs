@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GestoreEventi.Eccezioni;
 
 namespace GestoreEventi
 {
@@ -63,6 +64,29 @@ namespace GestoreEventi
 
                 this.dataEvento = nuovaData;
             }
+        }
+
+        //Metodi
+        public void Prenota()
+        {
+            this.numeroPostiPrenotati++;
+        }
+        public void Disdici()
+        {
+            if (dataEvento < DateTime.Now)
+            {
+                throw new DataEventoPassata("Non puoi disdire un posto ad un evento già passato");
+            }
+            else if(numeroPostiPrenotati <= 0)
+            {
+                throw new NessunPostoPrenotato("Nessun posto da disdire");
+            }
+            this.numeroPostiPrenotati--;
+        }
+        public override string ToString()
+        {
+            string dataPiuTitoloEvento = dataEvento.ToString("dd/MM/yyyy") +" - "+ titolo;
+            return dataPiuTitoloEvento;
         }
     }
 }
