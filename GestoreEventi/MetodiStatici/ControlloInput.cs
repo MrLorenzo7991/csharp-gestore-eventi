@@ -35,6 +35,7 @@ namespace GestoreEventi.MetodiStatici
                 throw new ArgumentException("La stringa deve contenere solo numeri interi");
             }
         }
- 
+
+       
     }
 }

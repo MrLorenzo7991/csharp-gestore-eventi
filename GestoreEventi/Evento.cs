@@ -76,9 +76,13 @@ namespace GestoreEventi
         public void Prenota(int numeroDiPostiDaPrenotare)
         {
             int numeroPostiDisponibili = capienzaMassimaEvento - numeroPostiPrenotati;
-            if (numeroDiPostiDaPrenotare <= numeroPostiDisponibili)
+            if (numeroDiPostiDaPrenotare <= numeroPostiDisponibili && numeroDiPostiDaPrenotare >0)
             {
                 numeroPostiPrenotati += numeroDiPostiDaPrenotare;
+            }
+            else if(numeroDiPostiDaPrenotare <= 0)
+            {
+                throw new NumeroUgualeOInferioreAZero("Non puoi inserire questo numero");
             }
             else
             {
@@ -94,6 +98,10 @@ namespace GestoreEventi
             else if(numeroPostiPrenotati <= 0)
             {
                 throw new NessunPostoPrenotato("Nessun posto da disdire");
+            }
+            else if(numeroDiPostiDaDisdire <= 0)
+            {
+                throw new NumeroUgualeOInferioreAZero("Non puoi inserire questo numero");
             }
             else if(numeroDiPostiDaDisdire > capienzaMassimaEvento)
             {

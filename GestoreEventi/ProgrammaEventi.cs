@@ -30,7 +30,7 @@ namespace GestoreEventi
                 if(evento.GetDataEvento() == dataEvento)
                 {
                     eventiStessaData.Add(evento);
-                }                                           //forse aggiungere eccezione se nessun evento ha quella data
+                }                                          
             }
             return eventiStessaData;
         }

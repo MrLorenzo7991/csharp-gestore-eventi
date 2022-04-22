@@ -37,8 +37,15 @@ Evento ChiediEvento()
         string capienzaMassimaInStringa = Console.ReadLine();
             try
             {
-                capienzaMassima = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa);     //aggiungere controllo su numeri negativi
-                formatoCapienzaMassimaCorretto=true;
+                capienzaMassima = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa); 
+                if (capienzaMassima < 0)
+                {
+                    Console.WriteLine("Il numero di posti deve essere maggiore di 0, riprova");
+                }
+                else
+                {
+                    formatoCapienzaMassimaCorretto = true;
+                }
             }catch(ArgumentException e)
             {
                 Console.Write("Inserisci solo numeri interi: ");
@@ -60,9 +67,22 @@ Evento ChiediEvento()
 }
 
 Evento evento = ChiediEvento();
+bool postiPreontatiOk = false;
+while(!postiPreontatiOk){ 
+    Console.Write("Quanti posti desideri prenotare?");
+    try
+    {
+        evento.Prenota(ControlloInput.ConvertiStringaInIntero(Console.ReadLine()));
+        postiPreontatiOk = true;
+    }catch(NumeroUgualeOInferioreAZero e)
+    {
+        Console.WriteLine("Non puoi inserire un valore inferirore o uguale a 0");
+    }catch(ArgumentOutOfRangeException e)
+    {
+        Console.WriteLine("Non è disponibile questo numero di posti");
+    }
+}
 
-Console.Write("Quanti posti desideri prenotare?");
-evento.Prenota(ControlloInput.ConvertiStringaInIntero(Console.ReadLine()));     //da gestire eccezzione
 Console.WriteLine("Numero posti prenotati: " + evento.GetNumeroPostiPrenotati());
 Console.WriteLine("Numero posti disponibili: " + evento.GetNumeroPostiDisponibili());
 bool vuoiDisdirePosti = true;
@@ -74,7 +94,19 @@ while (vuoiDisdirePosti)
     {
         case "si":
             Console.Write("Quanti posti vuoi disdire?");
-            evento.Disdici(ControlloInput.ConvertiStringaInIntero(Console.ReadLine())); //da gestire ecczione
+            try
+            {
+                evento.Disdici(ControlloInput.ConvertiStringaInIntero(Console.ReadLine())); 
+            }catch(NumeroUgualeOInferioreAZero e)
+            {
+                Console.WriteLine("Non puoi inserire un valore inferirore o uguale a 0");
+            }catch(DataEventoPassata e)
+            {
+                Console.WriteLine(e.Message);
+            }catch(NessunPostoPrenotato e)
+            {
+                Console.WriteLine(e.Message);
+            }
             Console.WriteLine("Numero posti prenotati: " + evento.GetNumeroPostiPrenotati());
             Console.WriteLine("Numero posti disponibili: " + evento.GetNumeroPostiDisponibili());
             break;
@@ -97,7 +129,27 @@ Console.WriteLine("Ora creiamo un programma di eventi");
 Console.Write("Come vuoi chiamare il tuo programma di eventi? ");
 ProgrammaEventi programma = new ProgrammaEventi(Console.ReadLine());
 Console.WriteLine("Quanti eventi vuoi aggiungere nel tuo programma? ");
-int numeroDiEventi = ControlloInput.ConvertiStringaInIntero(Console.ReadLine());        //da gestire eccezione numero intero
+int numeroDiEventi = 0;
+bool numeroDiEventiOk = false;
+while(!numeroDiEventiOk)
+{
+    try
+    {
+        numeroDiEventi = ControlloInput.ConvertiStringaInIntero(Console.ReadLine()); 
+        if (numeroDiEventi < 0)
+        {
+            Console.WriteLine("Seleziona un numero positivo");
+        }
+        else
+        {
+            numeroDiEventiOk = true;
+        }
+
+    }catch(Exception e)
+    {
+        Console.WriteLine("Formato numero non valido, riprova");
+    }
+}
 
 for(int i = 0; i < numeroDiEventi; i++)
 {
@@ -127,7 +179,7 @@ while (!formatoDataCorretto)
     }
 }
 List<Evento> eventiNellaDatataSpecifica = programma.EventiNellaData(dataDaControllare);
-if (eventiNellaDatataSpecifica.Count < 0)
+if (eventiNellaDatataSpecifica.Count > 0)
 {
     Console.WriteLine("La lista di eventi in data " + dataDaControllare.ToString("dd/MM/yyyy") + " è");
     ProgrammaEventi.StampaLista(eventiNellaDatataSpecifica);
@@ -138,7 +190,72 @@ else
 }
 //programma.SvuotaListaEventi();
 
-DateTime dataConferenza = new DateTime(2999, 12, 1);
-Conferenza conferezaAppezzottata = new Conferenza("Come non sclerare programmando", dataConferenza, 300, "Dott. Zen", 2.41);
-programma.AggiungiEvento(conferezaAppezzottata);
+Console.WriteLine("---------BONUS---------\n\n");
+Console.WriteLine("Aggiungiamo un conferenza!");
+
+Console.Write("Inserisci il nome della conferenza: ");
+string nomeCoferenza = Console.ReadLine();
+
+Console.Write("Inserisci data della conferenza: ");
+DateTime dataConferenza = DateTime.Now;
+bool formatoDataConferenzaCorretto = false;
+while (!formatoDataConferenzaCorretto)
+{
+    string dataConferenzaInStringa = Console.ReadLine();
+    try
+    {
+        dataConferenza = ControlloInput.ControllaFormatoData(dataConferenzaInStringa);
+        formatoDataConferenzaCorretto = true;
+    }
+    catch (Exception e)
+    {
+        Console.Write("La data non è in un formato corretto, riprova: ");
+    }
+}
+
+Console.Write("Inserisci il relatore della conferenza: ");
+string relatoreConferenza = Console.ReadLine();
+
+Console.Write("Inserisci numero posti della conferenza: ");
+int capienzaMassimaConferenza = 0;
+bool formatoCapienzaMassimaCorretto = false;
+while (!formatoCapienzaMassimaCorretto)
+{
+    string capienzaMassimaInStringa = Console.ReadLine();
+    try
+    {
+        capienzaMassimaConferenza = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa);
+        if (capienzaMassimaConferenza < 0)
+        {
+            Console.WriteLine("Il numero di posti deve essere maggiore di 0");
+        }
+        else
+        {
+            formatoCapienzaMassimaCorretto = true;
+        }
+    }
+    catch (ArgumentException e)
+    {
+        Console.Write("Inserisci solo numeri interi: ");
+    }
+}
+
+Console.Write("Inserisci il prezzo del biglietto della conferenza: ");
+bool prezzoBigliettoOk = false;
+double prezzoBiglietto = 0;
+while (!prezzoBigliettoOk)
+{
+    try
+    {
+        prezzoBiglietto = double.Parse(Console.ReadLine());
+        prezzoBigliettoOk = true;
+    }
+    catch(Exception e)
+    {
+        Console.WriteLine("inserisci il prezzo nel formato corretto");
+    }
+}
+
+Conferenza confereza = new Conferenza(nomeCoferenza, dataConferenza, capienzaMassimaConferenza, relatoreConferenza, prezzoBiglietto);
+programma.AggiungiEvento(confereza);
 Console.WriteLine(programma.StampaTuttoIlProgramma());
