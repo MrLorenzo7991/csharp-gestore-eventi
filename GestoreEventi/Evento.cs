@@ -9,10 +9,10 @@ namespace GestoreEventi
 {
     internal class Evento
     {
-        private string titolo;
-        private DateTime dataEvento;
-        private int capienzaMassimaEvento;
-        private int numeroPostiPrenotati;
+        private protected string titolo;
+        private protected DateTime dataEvento;
+        private protected int capienzaMassimaEvento;
+        private protected int numeroPostiPrenotati;
 
         public Evento(string titolo, DateTime dataEvento, int capienzaMassimaEvento)
         {

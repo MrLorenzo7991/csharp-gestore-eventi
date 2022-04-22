@@ -3,54 +3,63 @@ using GestoreEventi.Eccezioni;
 using GestoreEventi.MetodiStatici;
 
 Console.WriteLine("Benvenuto nel gestore di eventi!");
-Evento evento = null;
-bool inserimentoEventoCorretto = false;
-while (!inserimentoEventoCorretto)
+
+Evento ChiediEvento() 
 {
-    Console.Write("Inserici il nome dell'evento che vuoi aggiungere: ");
-    string nomeEvento = Console.ReadLine();
-
-    Console.Write("Inserisci la data dell'evento (gg/mm/yyyy): ");
-    DateTime dataEvento = DateTime.Now;
-    bool formatoDataCorretto = false;
-    while (!formatoDataCorretto)
+    Evento evento = null;
+    bool inserimentoEventoCorretto = false;
+    while (!inserimentoEventoCorretto)
     {
-        string dataEventoInStringa = Console.ReadLine();
+        Console.Write("Inserici il nome dell'evento che vuoi aggiungere: ");
+        string nomeEvento = Console.ReadLine();
+
+        Console.Write("Inserisci la data dell'evento (gg/mm/yyyy): ");
+        DateTime dataEvento = DateTime.Now;
+        bool formatoDataCorretto = false;
+        while (!formatoDataCorretto)
+        {
+            string dataEventoInStringa = Console.ReadLine();
+            try
+            {
+                dataEvento = ControlloInput.ControllaFormatoData(dataEventoInStringa);
+                formatoDataCorretto=true;
+            }catch(Exception e)
+            {
+                Console.Write("La data non è in un formato corretto, riprova: ");
+            }
+        }
+
+        Console.Write("Inserisci la capienza massima dell'evento: ");
+        int capienzaMassima = 0;
+        bool formatoCapienzaMassimaCorretto = false;
+        while (!formatoCapienzaMassimaCorretto)
+        {
+        string capienzaMassimaInStringa = Console.ReadLine();
+            try
+            {
+                capienzaMassima = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa);     //aggiungere controllo su numeri negativi
+                formatoCapienzaMassimaCorretto=true;
+            }catch(ArgumentException e)
+            {
+                Console.Write("Inserisci solo numeri interi: ");
+            }
+        }
+
         try
         {
-            dataEvento = ControlloInput.ControllaFormatoData(dataEventoInStringa);
-            formatoDataCorretto=true;
-        }catch(Exception e)
+            evento = new Evento(nomeEvento, dataEvento, capienzaMassima);      
+            inserimentoEventoCorretto = true;            
+        }
+        catch(InvalidDataException e)
         {
-            Console.Write("La data non è in un formato corretto, riprova: ");
+            Console.WriteLine("La data dell'evento non puù essere nel passato");
         }
     }
 
-    Console.Write("Inserisci la capienza massima dell'evento: ");
-    int capienzaMassima = 0;
-    bool formatoCapienzaMassimaCorretto = false;
-    while (!formatoCapienzaMassimaCorretto)
-    {
-    string capienzaMassimaInStringa = Console.ReadLine();
-        try
-        {
-            capienzaMassima = ControlloInput.ConvertiStringaInIntero(capienzaMassimaInStringa);
-            formatoCapienzaMassimaCorretto=true;
-        }catch(ArgumentException e)
-        {
-            Console.Write("Inserisci solo numeri interi: ");
-        }
-    }
-
-    try
-    {
-        evento = new Evento(nomeEvento, dataEvento, capienzaMassima);
-        inserimentoEventoCorretto = true;
-    }catch(InvalidDataException e)
-    {
-        Console.WriteLine("La data dell'evento non puù essere nel passato");
-    }
+    return evento;
 }
+
+Evento evento = ChiediEvento();
 
 Console.Write("Quanti posti desideri prenotare?");
 evento.Prenota(ControlloInput.ConvertiStringaInIntero(Console.ReadLine()));     //da gestire eccezzione
@@ -80,17 +89,47 @@ while (vuoiDisdirePosti)
             break;
     }
 }
+Console.WriteLine(evento.ToString());
 
 //Programma di eventi
 
 Console.WriteLine("Ora creiamo un programma di eventi");
 Console.Write("Come vuoi chiamare il tuo programma di eventi? ");
-ProgrammaEventi programma = new(Console.ReadLine());
+ProgrammaEventi programma = new ProgrammaEventi(Console.ReadLine());
 Console.WriteLine("Quanti eventi vuoi aggiungere nel tuo programma? ");
 int numeroDiEventi = ControlloInput.ConvertiStringaInIntero(Console.ReadLine());        //da gestire eccezione numero intero
 
 for(int i = 0; i < numeroDiEventi; i++)
 {
     Console.WriteLine("Evento numero " + (i+1));
-
+    Evento eventoProgramma = ChiediEvento();
+    programma.AggiungiEvento(eventoProgramma);
 }
+
+Console.WriteLine("Il numero di eventi presente nella lista è di: " + programma.NumeroEventiLista());
+Console.WriteLine("Ecco il tuo Programma di eventi: ");
+Console.WriteLine(programma.TuttoIlProgramma());
+
+Console.Write("Inserisci una data per conoscere tutti gli eventi in quella data: ");
+DateTime dataDaControllare = DateTime.Now;
+bool formatoDataCorretto = false;
+while (!formatoDataCorretto)
+{
+    string dataEventoInStringa = Console.ReadLine();
+    try
+    {
+        dataDaControllare = ControlloInput.ControllaFormatoData(dataEventoInStringa);
+        formatoDataCorretto = true;
+    }
+    catch (Exception e)
+    {
+        Console.Write("La data non è in un formato corretto, riprova: ");
+    }
+}
+List<Evento> eventiNellaDatataSpecifica = programma.EventiNellaData(dataDaControllare);
+
+Console.WriteLine("La lista di eventi in data " + dataDaControllare.ToString("dd/MM/yyyy") + " è");
+ProgrammaEventi.StampaLista(eventiNellaDatataSpecifica);
+programma.SvuotaListaEventi();
+
+

@@ -14,7 +14,7 @@ namespace GestoreEventi
         public ProgrammaEventi(string titoloProgrammaDiEventi)
         {
             this.titoloProgramma = titoloProgrammaDiEventi;
-            List<Evento> eventi;
+            this.eventi = new List<Evento>();
         }
 
         public void AggiungiEvento(Evento eventoDaAggiungereAllaLista)
@@ -24,7 +24,7 @@ namespace GestoreEventi
 
         public List<Evento> EventiNellaData(DateTime dataEvento)
         {
-            List<Evento> eventiStessaData = null;
+            List<Evento> eventiStessaData = new List<Evento> ();
             foreach (Evento evento in eventi)
             {
                 if(evento.GetDataEvento() == dataEvento)
@@ -53,6 +53,13 @@ namespace GestoreEventi
                 tuttoIlProgramma += "\t" + evento.ToString() + "\n";
             }
             return tuttoIlProgramma;
+        }
+        public static void StampaLista(List<Evento> listaDaStampare)
+        {
+            foreach (Evento evento in listaDaStampare)
+            {
+                Console.WriteLine(evento.ToString());
+            }
         }
     }
 }
